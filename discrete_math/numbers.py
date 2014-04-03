@@ -6,6 +6,13 @@ http://primes.utm.edu/lists/small/millions/
 The first million primes
 first : 2
 last  :15,485,863
+
+This module is still in development.
+I am still deciding if this is still the best way to
+go about this.
+
+Note that the point of this file adds new primes and composites each time
+a new one is found.
 '''
 
 primes = []
