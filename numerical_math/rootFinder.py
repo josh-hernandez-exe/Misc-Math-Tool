@@ -48,7 +48,7 @@ def bisectionMethod(ff,aa,bb,tol=0.0001,maxIter=10**4):
 	   aa,bb = bb,aa
 	
 	if ff(a)*ff(b) > 0 :
-		raise 'Error: endpoints have the same sign')
+		raise 'Error: endpoints have the same sign'
 
 	isFirstRun = True
 	
@@ -84,34 +84,34 @@ def bisectionMethod(ff,aa,bb,tol=0.0001,maxIter=10**4):
 
 
 def secentMethod(ff,aa,bb,tol=0.0001,maxIter=10**4):
-    
+	
 	if not callable(ff) :
 		raise "The function passed must be passed and be callable."
 
 	if aa>bb :
 	   aa,bb = bb,aa
 
-    x1 = aa
-    x2 = bb
+	x1 = aa
+	x2 = bb
 
-    for ii in range(maxIter) :
+	for ii in range(maxIter) :
 
-        fx1 = ff(x1)
+		fx1 = ff(x1)
 
-        fx2 = ff(x2)
+		fx2 = ff(x2)
 
-        xi = x2 - fx2 * (x1-x2) / (fx1-fx2) 
+		xi = x2 - fx2 * (x1-x2) / (fx1-fx2) 
 
-        if DEBUG and isFirstRun:
+		if DEBUG and isFirstRun:
 			print ''
 			print 'Secant Method'
 			print 'iter      x1         f(x1)        x2          f(x2)        xi'
 
-        if DEBUG :
-        	print '%3d %11.6f %11.6f %11.6f %11.6f %11.6f\n' % (ii,x1,fx1,x2,fx2,xi)
+		if DEBUG :
+			print '%3d %11.6f %11.6f %11.6f %11.6f %11.6f\n' % (ii,x1,fx1,x2,fx2,xi)
 
-        x1 = x2
-        x2 = xi
+		x1 = x2
+		x2 = xi
 
 	return xi
 
