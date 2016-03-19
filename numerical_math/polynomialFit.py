@@ -1,6 +1,10 @@
 import numpy as np
 
 def leastSquaresPolyFit(xx,yy,kk):
+    '''
+    Applies Least Squares regression on the data do create
+    the coefficient of a polynomial of degree k
+    '''
 	nn = len(xx)
 	MM = np.ones([nn,kk+1])
 
