@@ -119,14 +119,15 @@ def _make_cubic_spline_matrix(nn):
     coeff[0][0] = 2
     coeff[nn-1][nn-1] = 2
 
-    return coeff
+    return np.matrix(coeff)
 
 def _make_cubic_spline_vector(y_vals):
     temp_1 = np.array(list(y_vals[1:]) + [y_vals[-1]])
     temp_2 = np.array([y_vals[0]] + list(y_vals[:-1]))
     vv =  3*(temp_1-temp_2)
+    vv = vv.reshape([len(vv),1])
 
-    return vv.reshape([len(vv),1])
+    return np.matrix(vv)
 
 def _generate_cubic_spline_coef_list(input_y_vals, spline_vals):
     coef_list = []
