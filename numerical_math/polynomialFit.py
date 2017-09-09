@@ -149,7 +149,7 @@ def _generate_cubic_spline_coef_list(input_y_vals, spline_vals):
 
     return coef_list
 
-def clac_spline_interpolation(output_x_vals, input_y_vals):
+def calc_spline_interpolation(output_x_vals, input_y_vals):
     """
     the input_y_vals are expected to be evenly spaced.
     where the input_x_vals are the integers from 0.
@@ -167,7 +167,6 @@ def clac_spline_interpolation(output_x_vals, input_y_vals):
     # generate each set of coefficents for each piecewise polynomials
     # note that the number of polynomicals is one less than the total number of points
     coef_list = _generate_cubic_spline_coef_list(input_y_vals, spline_vals)
-
 
     # calculate a map of which polynomial to use
     poly_map = [ int(xx) for xx in output_x_vals]
