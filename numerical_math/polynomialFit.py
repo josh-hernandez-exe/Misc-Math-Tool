@@ -106,3 +106,33 @@ def calc_poly(x_val,poly_coef,reverse=False):
         y_val += coef_val
 
     return y_val
+
+
+# CUBLIC SPLINE INTERPOLATION
+
+def _make_cubic_spline_matrix(nn):
+    ii = np.eye(nn,nn)
+    sub_ii = np.tri(nn,nn,k=-1) - np.tri(nn,nn,k=-2)
+
+    coeff = 4*ii + sub_ii + sub_ii.transpose()
+
+    coeff[0][0] = 2
+    coeff[nn-1][nn-1] = 2
+
+    return coeff
+
+def _make_cubic_spline_vector(y_vals):
+    temp_1 = np.array(list(y_vals[1:]) + [y_vals[-1]])
+    temp_2 = np.array([y_vals[0]] + list(y_vals[:-1]))
+    vv =  3*(temp_1-temp_2)
+
+    return vv.reshape([len(vv),1])
+
+
+def _calc_spline_values(output_x_vals, input_y_vals, spline_vals):
+    """
+    the input_y_vals are expected to be evenly spaced.
+    where the input_x_vals are the integers from 0.
+    """
+
+    # generate each set of coefficents for each piecewise polynomials
