@@ -98,7 +98,7 @@ def calc_poly(x_val,poly_coef,reverse=False):
     else:
         raise "Error"
 
-    for coef_val in np.nditer(poly_coef):
+    for coef_val in poly_coef:
         # calculates
         # yFit = aa*xVal**n + bb*xVal**(n-1) + ...
         # faster
@@ -176,7 +176,7 @@ def calc_spline_interpolation(output_x_vals, input_y_vals):
     for ii in range(len(output_x_vals)):
         poly_index = int(output_x_vals[ii])
         xx = output_x_vals[ii] - poly_index
-        yy = calc_poly(xx,poly_map[poly_index],reverse=False)
+        yy = calc_poly(xx,coef_list[poly_index],reverse=True)
         output_y_vals.append(yy)
 
     return np.array(output_y_vals)
