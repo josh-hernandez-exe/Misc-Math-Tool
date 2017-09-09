@@ -153,10 +153,14 @@ def clac_spline_interpolation(output_x_vals, input_y_vals):
     """
     the input_y_vals are expected to be evenly spaced.
     where the input_x_vals are the integers from 0.
+
     """
 
     matrix_coef = _make_cubic_spline_matrix(len(input_y_vals))
     vector = _make_cubic_spline_vector(input_y_vals)
+
+    spline_vals = matrix_coef**(-1) * vector
+    spline_vals = np.array(spline_vals).flatten()
 
     assert len(input_y_vals) == len(spline_vals)
 
@@ -165,3 +169,15 @@ def clac_spline_interpolation(output_x_vals, input_y_vals):
     coef_list = _generate_cubic_spline_coef_list(input_y_vals, spline_vals)
 
 
+    # calculate a map of which polynomial to use
+    poly_map = [ int(xx) for xx in output_x_vals]
+
+    output_y_vals = []
+
+    for ii in range(len(output_x_vals)):
+        poly_index = int(output_x_vals[ii])
+        xx = output_x_vals[ii] - poly_index
+        yy = calc_poly(xx,poly_map[poly_index],reverse=False)
+        output_y_vals.append(yy)
+
+    return np.array(output_y_vals)
