@@ -82,30 +82,27 @@ def lagrangePolyHelper(xval,xList,ii):
 
     return yVal
 
-def calcPoly(xVal,polyCoef,reverse=False):
+def calc_poly(x_val,poly_coef,reverse=False):
 
-    numCheck = type(xVal)==int or type(xVal)==float
-    numCheck = numCheck or type(xVal)==complex
-    numCheck = numCheck or isinstance(xVal, np.number)
+    num_check = isinstance(x_val, (int,float,complex, np.number))
 
     if reverse:
         polyCoef = polyCoef[::-1]
 
+    y_val = None
+    if num_check and not isinstance(x_val,np.ndarray):
+        y_val = 0
 
-    if numCheck and not isinstance(xVal,np.ndarray) :
-        yVal = 0
-
-    elif isinstance(xVal,np.ndarray) :
-        yVal = np.zeros( xVal.shape )
-
+    elif isinstance(x_val,np.ndarray) :
+        y_val = np.zeros( x_val.shape )
     else:
         raise "Error"
 
-    for coefVal in np.nditer(polyCoef):
+    for coef_val in np.nditer(polyCoef):
         # calculates
         # yFit = aa*xVal**n + bb*xVal**(n-1) + ...
         # faster
-        yVal *= xVal
-        yVal += coefVal
+        y_val *= x_val
+        y_val += coef_val
 
-    return yVal
+    return y_val
