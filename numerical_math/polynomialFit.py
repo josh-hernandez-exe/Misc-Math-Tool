@@ -87,7 +87,7 @@ def calc_poly(x_val,poly_coef,reverse=False):
     num_check = isinstance(x_val, (int,float,complex, np.number))
 
     if reverse:
-        polyCoef = polyCoef[::-1]
+        poly_coef = poly_coef[::-1]
 
     y_val = None
     if num_check and not isinstance(x_val,np.ndarray):
@@ -98,7 +98,7 @@ def calc_poly(x_val,poly_coef,reverse=False):
     else:
         raise "Error"
 
-    for coef_val in np.nditer(polyCoef):
+    for coef_val in np.nditer(poly_coef):
         # calculates
         # yFit = aa*xVal**n + bb*xVal**(n-1) + ...
         # faster
@@ -142,8 +142,8 @@ def _generate_cubic_spline_coef_list(input_y_vals, spline_vals):
         # y(t) = a + bt + ct^2 + dt^3
         aa = yy_i
         bb = dd_i
-        cc = 3*(yy_ip1 - yy_i) - 2*dd_i - dd
-        dd = 2*(yy_i - yy_ip1) + dd + dd_ip1
+        cc = 3*(yy_ip1 - yy_i) - 2*dd_i - dd_ip1
+        dd = 2*(yy_i - yy_ip1) + dd_i + dd_ip1
 
         coef_list.append((aa,bb,cc,dd))
 
