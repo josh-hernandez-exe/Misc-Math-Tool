@@ -128,11 +128,39 @@ def _make_cubic_spline_vector(y_vals):
 
     return vv.reshape([len(vv),1])
 
+def _generate_cubic_spline_coef_list(input_y_vals, spline_vals):
+    coef_list = []
 
-def _calc_spline_values(output_x_vals, input_y_vals, spline_vals):
+    for ii in range(len(input_y_vals)-1):
+        yy_i = input_y_vals[ii]
+        yy_ip1 = input_y_vals[ii+1]
+        dd_i = spline_vals[ii]
+        dd_ip1 = spline_vals[ii+1]
+
+        # polynomial coefs
+        # y(t) = a + bt + ct^2 + dt^3
+        aa = yy_i
+        bb = dd_i
+        cc = 3*(yy_ip1 - yy_i) - 2*dd_i - dd
+        dd = 2*(yy_i - yy_ip1) + dd + dd_ip1
+
+        coef_list.append((aa,bb,cc,dd))
+
+    return coef_list
+
+def clac_spline_interpolation(output_x_vals, input_y_vals):
     """
     the input_y_vals are expected to be evenly spaced.
     where the input_x_vals are the integers from 0.
     """
 
+    matrix_coef = _make_cubic_spline_matrix(len(input_y_vals))
+    vector = _make_cubic_spline_vector(input_y_vals)
+
+    assert len(input_y_vals) == len(spline_vals)
+
     # generate each set of coefficents for each piecewise polynomials
+    # note that the number of polynomicals is one less than the total number of points
+    coef_list = _generate_cubic_spline_coef_list(input_y_vals, spline_vals)
+
+
