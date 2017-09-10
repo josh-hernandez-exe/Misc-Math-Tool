@@ -1,4 +1,5 @@
 import numpy as np
+from collections import defaultdict
 
 def leastSquaresPolyFit(xx,yy,kk):
     '''
@@ -149,7 +150,7 @@ def _generate_cubic_spline_coef_list(input_y_vals, spline_vals):
 
     return coef_list
 
-def calc_spline_interpolation(output_x_vals, input_y_vals):
+def calc_spline_interpolation(output_x_vals, input_y_vals, dtype = np.float):
     """
     the input_y_vals are expected to be evenly spaced.
     where the input_x_vals are the integers from 0.
@@ -168,15 +169,28 @@ def calc_spline_interpolation(output_x_vals, input_y_vals):
     # note that the number of polynomicals is one less than the total number of points
     coef_list = _generate_cubic_spline_coef_list(input_y_vals, spline_vals)
 
-    # calculate a map of which polynomial to use
-    poly_map = [ int(xx) for xx in output_x_vals]
+    output_y_vals = np.zeros(len(output_x_vals), dtype=dtype)
 
-    output_y_vals = []
+    xvals_per_poly = defaultdict(list)
+    index_mapping_per_poly = defaultdict(list)
 
-    for ii in range(len(output_x_vals)):
-        poly_index = int(output_x_vals[ii])
-        xx = output_x_vals[ii] - poly_index
-        yy = calc_poly(xx,coef_list[poly_index],reverse=True)
-        output_y_vals.append(yy)
+    for index,x_val in enumerate(output_x_vals):
+        poly_index = int(x_val)
+        xvals_per_poly[poly_index].append(x_val - poly_index)
+        index_mapping_per_poly[poly_index].append(index)
 
-    return np.array(output_y_vals)
+    for poly_index in xvals_per_poly:
+        x_vals = np.array(xvals_per_poly[poly_index])
+        y_vals = calc_poly(x_vals,coef_list[poly_index],reverse=True)
+        mask = np.array(index_mapping_per_poly[poly_index])
+        output_y_vals[mask] = y_vals
+
+    return output_y_vals
+
+if __name__ == "__main__":
+    aa = np.linspace(0,5,20)
+    bb = range(10)
+    cc = calc_spline_interpolation(np.linspace(0,5,20), bb)
+
+    print(aa)
+    print(cc)
