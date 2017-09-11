@@ -1,7 +1,7 @@
 import numpy as np
 from collections import defaultdict
 
-def leastSquaresPolyFit(xx,yy,kk):
+def least_squares_poly_fit(xx,yy,kk):
     '''
     Applies Least Squares regression on the data do create
     the coefficient of a polynomial of degree k
@@ -21,17 +21,15 @@ def leastSquaresPolyFit(xx,yy,kk):
 
     MM = np.matrix(MM)
 
-    yy = np.matrix(yy)
-    yy = yy.transpose()
+    yy = np.matrix(yy).reshape(len(yy),1)
 
-    tempM = MM.transpose() * MM
+    temp_m = MM.transpose() * MM
 
-    params = tempM**(-1) *  MM.transpose() * yy
+    params = temp_m**(-1) *  MM.transpose() * yy
 
-    params = params.transpose()
-    params = np.array(params)
+    params = np.array(params).flatten()
 
-    return params[0] # an odd fix to cast to 1-D array
+    return params
 
 def lagrangePoly(xval,xList,yList):
 
@@ -189,6 +187,16 @@ def calc_spline_interpolation(output_x_vals, input_y_vals, dtype = np.float):
     return output_y_vals
 
 if __name__ == "__main__":
+    print('LEAST SQUARES REGRESSION TEST')
+    aa = range(10)
+    bb = range(10)
+    cc = least_squares_poly_fit(aa, bb, 4)
+    print(aa)
+    print(bb)
+    print(cc)
+
+    print('CUBLIC SPLINE TESTS')
+
     aa = np.linspace(0,5,20)
     bb = range(10)
     cc = calc_spline_interpolation(np.linspace(0,5,20), bb)
