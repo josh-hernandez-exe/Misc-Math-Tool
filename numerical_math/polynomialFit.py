@@ -86,15 +86,16 @@ def lagrangePolyHelper(xval,xList,ii):
 def calc_poly(x_val,poly_coef,reverse=False):
 
     num_check = isinstance(x_val, (int,float,complex, np.number))
+    array_check = isinstance(x_val,np.ndarray)
 
     if reverse:
         poly_coef = poly_coef[::-1]
 
     y_val = None
-    if num_check and not isinstance(x_val,np.ndarray):
+    if num_check and not array_check:
         y_val = 0
 
-    elif isinstance(x_val,np.ndarray) :
+    elif array_check:
         y_val = np.zeros( x_val.shape )
     else:
         raise "Error"
@@ -133,20 +134,17 @@ def _make_cubic_spline_vector(y_vals):
 def _generate_cubic_spline_coef_list(input_y_vals, spline_vals):
     coef_list = []
 
-    for ii in range(len(input_y_vals)-1):
-        yy_i = input_y_vals[ii]
-        yy_ip1 = input_y_vals[ii+1]
-        dd_i = spline_vals[ii]
-        dd_ip1 = spline_vals[ii+1]
+    iterator = zip(input_y_vals[:-1],input_y_vals[1:],spline_vals[:-1],spline_vals[1:])
 
+    for yy_i,yy_ip1,dd_i,dd_ip1 in iterator:
         # polynomial coefs
         # y(t) = a + bt + ct^2 + dt^3
-        aa = yy_i
-        bb = dd_i
+        # aa = yy_i
+        # bb = dd_i
         cc = 3*(yy_ip1 - yy_i) - 2*dd_i - dd_ip1
         dd = 2*(yy_i - yy_ip1) + dd_i + dd_ip1
 
-        coef_list.append((aa,bb,cc,dd))
+        coef_list.append((yy_i,dd_i,cc,dd))
 
     return coef_list
 
@@ -193,4 +191,14 @@ if __name__ == "__main__":
     cc = calc_spline_interpolation(np.linspace(0,5,20), bb)
 
     print(aa)
+    print(bb)
+    print(cc)
+
+
+    aa = np.linspace(0,5,20)
+    bb = np.random.random(10)
+    cc = calc_spline_interpolation(np.linspace(0,5,20), bb)
+
+    print(aa)
+    print(bb)
     print(cc)
