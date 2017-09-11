@@ -174,6 +174,9 @@ def calc_spline_interpolation(output_x_vals, input_y_vals, dtype = np.float):
 
     for index,x_val in enumerate(output_x_vals):
         poly_index = int(x_val)
+        if poly_index == len(coef_list):
+            # the edge of the final polynomial
+            poly_index -= 1
         xvals_per_poly[poly_index].append(x_val - poly_index)
         index_mapping_per_poly[poly_index].append(index)
 
@@ -188,6 +191,14 @@ def calc_spline_interpolation(output_x_vals, input_y_vals, dtype = np.float):
 if __name__ == "__main__":
     aa = np.linspace(0,5,20)
     bb = range(10)
+    cc = calc_spline_interpolation(np.linspace(0,5,20), bb)
+
+    print(aa)
+    print(bb)
+    print(cc)
+
+    bb = range(10)
+    aa = np.linspace(bb[-3],bb[-1],20)
     cc = calc_spline_interpolation(np.linspace(0,5,20), bb)
 
     print(aa)
